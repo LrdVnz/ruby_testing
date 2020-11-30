@@ -355,21 +355,27 @@ describe BinaryGame do
 
     before do
       # You'll need to create a few method stubs.
-      allow(game_turn).to receive(:display_turn_order)
+      allow(binary_search_turn).to receive(:make_guess)
+      allow(game_turn).to receive(:display_guess).with(binary_search_turn)
+      allow(binary_search_turn).to receive(:update_range)
     end
 
     # Command Method -> Test the change in the observable state
     it 'increases guess_count by one' do
+      game_turn.display_turn_order(binary_search_turn)
       expect(guess_count).to eq(1)
-      game_turn.display_turn_order
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends make_guess' do
+    it 'sends make_guess' do
+      expect(binary_search_turn).to receive(:make_guess)
+      game_turn.display_turn_order(binary_search_turn)
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends update_range' do
+    it 'sends update_range' do
+      expect(binary_search_turn).to receive(:update_range)
+      game_turn.display_turn_order(binary_search_turn)
     end
 
     # Using method expectations can be confusing. Stubbing the methods above
@@ -380,7 +386,7 @@ describe BinaryGame do
     # #display_turn_order. Uncomment the line at the bottom of this
     # paragraph, move it to the before hook, and run the tests.
     # All of the tests should continue to pass.
-    # allow(binary_search_turn).to receive(:game_over?)
+    # allow(binary_search_turn).to receive(:game_over?) 
 
     # Now, in the lib/15a_binary_game.rb file, comment out either line,
     # binary_search.make_guess or binary_search.update_range. Resave the file
